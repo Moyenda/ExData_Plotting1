@@ -1,0 +1,24 @@
+# Read data set into R and format appropriately.
+powerCon <- read.table('household_power_consumption.txt', header = TRUE, 
+                       sep = ';', na.strings = '?')
+powerCon$Date <- as.Date(powerCon$Date, format = '%d/%m/%Y')
+powerCon$Time <- strptime(powerCon$Time, format = '%H:%M:%S')
+powerCon$Time <- strftime(powerCon$Time, format = '%H:%M:%S')
+
+# Subset relevant data for analysis. 
+febPower <- powerCon[ which(powerCon$Date == '2007-2-1' | 
+                                    powerCon$Date == '2007-2-2'),]
+
+#Initialise text shrinking parameter.
+par(cex = 0.8)
+
+# Make Plot 1
+hist(febPower$Global_active_power, col = 'red', main = 'Global Active Power', 
+     xlab = 'Global Active Power (kilowatts)', ylab = 'Frequency')
+
+#Copy to PNG file.
+dev.copy(png, file = 'plot1.png')
+dev.off()
+
+
+
